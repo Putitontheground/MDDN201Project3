@@ -1,6 +1,7 @@
 
 var roun, r, t;
 var counter = 0;
+var mic;
 
 
 //dat.GUI controls
@@ -31,10 +32,15 @@ function setup() {
   createCanvas(windowWidth, windowHeight);
   frameRate(60);
   colorMode(HSB,1);
+  mic = new p5.AudioIn();
+  mic.start();
+
+
 }
 
 function gif(){
-  
+   var vol = mic.getLevel();
+  console.log(vol);
   push();
 
     blendMode(ADD);
@@ -47,14 +53,14 @@ function gif(){
        
         push();
         
-        roun = TWO_PI+TWO_PI*i/obj.amount;
+        roun = TWO_PI*i/obj.amount;
         rotate(-roun);
         r = obj.shape*sin(obj.shape/2*roun + TWO_PI*t + .1*n);
      
         
           beginShape();
-          vertex(r,obj.size);
-          vertex((windowWidth/2),(windowHeight/2));
+          vertex(r,obj.size*vol);
+          vertex((windowWidth/2),(windowHeight));
           endShape(CLOSE);
 
         pop();
@@ -70,4 +76,5 @@ function draw() {
   background(0);
   counter += 1000;
   gif();
+
 }
