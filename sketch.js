@@ -1,11 +1,9 @@
 var roun, r, t;
 var counter = 0;
-var song;
-var button;
 
-function preload() {
-    song = loadSound('assets/song.mp3');
-}
+//var song;
+
+
 
 //dat.GUI controls
 
@@ -35,8 +33,12 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     frameRate(60);
     colorMode(HSB, 1);
-    song.play();
+
+    //song = loadSound("assets/song.mp3");
+    //song.setVolume(0.5);
+    //song.play();
 }
+
 
 function gif() {
 
@@ -56,7 +58,7 @@ function gif() {
             r = obj.shape * sin(obj.shape / 2 * roun + TWO_PI * t + .1 * n);
 
             beginShape();
-            vertex(r, obj.size * vol);
+            vertex(r, obj.size);
             vertex((windowWidth / 2), (windowHeight));
             endShape(CLOSE);
 
@@ -72,6 +74,23 @@ function draw() {
     background(0);
     counter += 1000;
     gif();
-    var vol = 1;
-
 }
+
+//function loaded() {
+ // song.play();
+//}
+
+
+
+
+
+/*@inproceedings{papoutsaki2016webgazer,
+author = {Alexandra Papoutsaki and Patsorn Sangkloy and James Laskey and Nediyana Daskalova and Jeff Huang and James Hays},
+title = {WebGazer: Scalable Webcam Eye Tracking Using User Interactions},
+booktitle = {Proceedings of the 25th International Joint Conference on Artificial Intelligence (IJCAI)},
+pages = {3839--3845},
+year = {2016},
+organization={AAAI}
+}*/
+
+
