@@ -1,9 +1,6 @@
 var roun, r, t;
 var counter = 0;
 
-//var song;
-
-
 
 //dat.GUI controls
 
@@ -30,14 +27,12 @@ gui.add(obj, "trails").min(2).max(4);
 //p5 draw 
 
 function setup() {
-    createCanvas(windowWidth, windowHeight/1.15);
+    createCanvas(windowWidth, windowHeight);
     frameRate(60);
     colorMode(HSB, 1);
    
 
-    //song = loadSound("assets/song.mp3");
-    //song.setVolume(0.5);
-    //song.play();
+
 }
 
 
@@ -67,8 +62,8 @@ function gif() {
             r = obj.shape * sin(obj.shape / 2 * roun + TWO_PI * t + .1 * n);
 
             beginShape();
-            vertex(x*r/2, y/2);
-            vertex((windowWidth / 2), (windowHeight/1.15));
+            vertex(x*r/3, y/3);
+            vertex((windowWidth/2), (windowHeight/2));
             endShape(CLOSE);
 
             pop();
@@ -155,13 +150,6 @@ function draw() {
 
 }
 
-//function loaded() {
- // song.play();
-//}
-
-
-
-
 
 /*@inproceedings{papoutsaki2016webgazer,
 author = {Alexandra Papoutsaki and Patsorn Sangkloy and James Laskey and Nediyana Daskalova and Jeff Huang and James Hays},
@@ -171,5 +159,3 @@ pages = {3839--3845},
 year = {2016},
 organization={AAAI}
 }*/
-
-
