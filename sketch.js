@@ -1,9 +1,8 @@
-var roun, r, t;
+var roun;
+var r;
+var t;
 var counter = 0;
-
-//var song;
-
-
+var tracking;
 
 //dat.GUI controls
 
@@ -16,6 +15,8 @@ var obj = {
     shape: 150,
     trails: 3
 };
+
+//dat.gui interface
 
 gui.add(obj, "size").min(1).max(500);
 
@@ -33,31 +34,39 @@ function setup() {
     createCanvas(windowWidth, windowHeight);
     frameRate(60);
     colorMode(HSB, 1);
-   
 
-    //song = loadSound("assets/song.mp3");
-    //song.setVolume(0.5);
-    //song.play();
 }
+
+//color tracker
 
 var colors = new tracking.ColorTracker(['magenta', 'cyan', 'yellow']);
 
 colors.on('track', function(event) {
-  if (event.data.length === 0) {
-    // No colors were detected in this frame.
-  } else {
-    event.data.forEach(function(rect) {
-      // rect.x, rect.y, rect.height, rect.width, rect.color
-    });
-  }
+    if (event.data.length === 0) {// No colors were detected in this frame.
+    } else {
+        event.data.forEach(function(rect) {
+            console.log(rect.x, rect.y, rect.height, rect.width, rect.color);
+        });
+    }
 });
 
-    window.onload = function() {
-      var video = document.getElementById('video');
-      var canvas = document.getElementById('canvas');
+tracking.track('#myVideo', colors);
+
+window.onload = function() {
+      var canvas = document.getElementById('myVideo');
       var context = canvas.getContext('2d');
-      var tracker = new tracking.ColorTracker();
-      tracking.track('#video', tracker, { camera: true });
+      tracking.ColorTracker.registerColor('purple', function(r, g, b) {
+        var dx = r - 120;
+        var dy = g - 60;
+        var dz = b - 210;
+        if ((b - g) >= 100 && (r - g) >= 60) {
+          return true;
+        }
+        return dx * dx + dy * dy + dz * dz < 3500;
+      });
+      var tracker = new tracking.ColorTracker(['yellow', 'purple']);
+      tracker.setMinDimension(5);
+      tracking.track('#video', tracker);
       tracker.on('track', function(event) {
         context.clearRect(0, 0, canvas.width, canvas.height);
         event.data.forEach(function(rect) {
@@ -72,18 +81,11 @@ colors.on('track', function(event) {
           context.fillText('y: ' + rect.y + 'px', rect.x + rect.width + 5, rect.y + 22);
         });
       });
-     initGUIControllers(tracker);
+      initGUIControllers(tracker);
     };
 
 function gif() {
 
- /*   var prediction = webgazer.getCurrentPrediction();
-
-            if (prediction) {
-        var x = prediction.x;
-        var y = prediction.y;
-}
-*/
     push();
 
     blendMode(ADD);
@@ -101,7 +103,7 @@ function gif() {
 
             beginShape();
             vertex(r, obj.shape);
-            vertex((windowWidth / 2), (windowHeight/1.15));
+            vertex((windowWidth / 2), (windowHeight / 1.15));
             endShape(CLOSE);
 
             pop();
@@ -113,98 +115,8 @@ function gif() {
 function draw() {
     t = counter * obj.speed * 0.0000005;
     counter += 1000;
-    translate(width/2,height/2);
+    translate(width / 2, height / 2);
     background(0);
     gif();
 
 }
-
-
-
- /* window.onload = function() {
-    webgazer.setRegression('ridge') currently must set regression and tracker
-      .setTracker('clmtrackr')
-        .setGazeListener(function(data, clock) {
-         //   console.log(data); data is an object containing an x and y key which are the x and y prediction coordinates (no bounds limiting) 
-         //   console.log(clock); elapsed time in milliseconds since webgazer.begin() was called 
-        })
-        .begin()
-        .showPredictionPoints(true); shows a square every 100 milliseconds where current prediction is 
-
-    var width = 220;
-    var height = 140;
-    var topDist = '0px';
-    var leftDist = '0px';
-    
-    var setup = function() {
-        var video = document.getElementById('webgazerVideoFeed');
-        video.style.display = 'block';
-        video.style.position = 'absolute';
-        video.style.top = topDist;
-        video.style.left = leftDist;
-        video.width = width;
-        video.height = height;
-        video.style.margin = '0px';
-
-        webgazer.params.imgWidth = width;
-        webgazer.params.imgHeight = height;
-
-        var overlay = document.createElement('canvas');
-        overlay.id = 'overlay';
-        overlay.style.position = 'absolute';
-        overlay.width = width;
-        overlay.height = height;
-        overlay.style.top = topDist;
-        overlay.style.left = leftDist;
-        overlay.style.margin = '0px';
-
-        document.body.appendChild(overlay);
-
-        var cl = webgazer.getTracker().clm;
-
-        function drawLoop() {
-            requestAnimFrame(drawLoop);
-            overlay.getContext('2d').clearRect(0,0,width,height);
-            if (cl.getCurrentPosition()) {
-                cl.draw(overlay);
-            }
-        }
-        drawLoop();
-    };
-
-    function checkIfReady() {
-        if (webgazer.isReady()) {
-            setup();
-        } else {
-            setTimeout(checkIfReady, 100);
-        }
-    }
-    setTimeout(checkIfReady,100);
-};
-
-
-window.onbeforeunload = function() {
-    //webgazer.end(); //Uncomment if you want to save the data even if you reload the page.
-    window.localStorage.clear(); //Comment out if you want to save data across different sessions 
-} 
-*/
-
-
-//function loaded() {
- // song.play();
-//}
-
-
-
-
-
-/*@inproceedings{papoutsaki2016webgazer,
-author = {Alexandra Papoutsaki and Patsorn Sangkloy and James Laskey and Nediyana Daskalova and Jeff Huang and James Hays},
-title = {WebGazer: Scalable Webcam Eye Tracking Using User Interactions},
-booktitle = {Proceedings of the 25th International Joint Conference on Artificial Intelligence (IJCAI)},
-pages = {3839--3845},
-year = {2016},
-organization={AAAI}
-}*/
-
-
