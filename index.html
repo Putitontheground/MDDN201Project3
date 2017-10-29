@@ -1,53 +1,39 @@
 <!doctype html>
 <html lang="en">
     <head>
+    
+
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
         <title></title>
-        <link rel="stylesheet" href="assets/demo.css">
+        <link rel="stylesheet" type="text/css" href="style.css">
         <script src="libraries/p5.js" type="text/javascript"></script>
         <script src="libraries/p5.dom.js" type="text/javascript"></script>
         <script src="libraries/p5.sound.js" type="text/javascript"></script>
-        <script src="../build/tracking-min.js"></script>
-        <script src="../build/data/face-min.js"></script>
-        <script src="../node_modules/dat.gui/build/dat.gui.min.js"></script>
-        <style>
-            body {
-                overflow: hidden;
-            }
-
-            #video, #canvas {
-                bottom: 0;
-                position: absolute;
-                z-index: 100;
-            }
-            p {
-                text-transform: uppercase;
-            }
-            
-        </style>
+        <script src="/build/tracking-min.js"></script>
+        <script src="/build/data/face-min.js"></script>
+        <script src="assets/stats.min.js"></script>
+        <script src="/node_modules/dat.gui/build/dat.gui.min.js"></script>
+        
     </head>
     <body>
-        <div class="demo-title">
+        <div class="Header">
             <p>
-                <b>USE YOUR FACE TO CONTROL THE SCENE</b>
+                <b>Use your face to control the scene</b>
             </p>
         </div>
         <div id="viewport">
             <video id="video" width="320" height="240" preload autoplay loop muted></video>
             <canvas id="canvas" width="320" height="240"></canvas>
         </div>
+
         <script>
 
-            var roun;
-            var r;
-            var t;
-            var counter = 0;
-
             //dat.GUI controls
-            var No = 100, tr = 8;
+            var No = 100
+              , tr = 8;
             var roun, r, t;
-            var speed = 1/10000;
+            var speed = 1 / 10000;
             var counter = 0;
 
             //dat.gui interface
@@ -67,22 +53,21 @@
 
                 blendMode(ADD);
 
-                      for(var i=0; i<No; i++){
-                        for(var n=0; n<tr; n++){
-                          fill(i/tr,1,20/tr);
-                          stroke(i/No,1,n/tr);
-                         
-                          push();
-                          
-                          roun = TWO_PI*i/No;
-                          rotate(-roun);
-                          r = faceX/2*sin(faceY/2*roun + TWO_PI*t + .1*n);
-                          
-                          
-                            beginShape();
-                            vertex(r,100);
-                            vertex((windowWidth/2),(windowHeight/2));
-                            endShape(CLOSE);
+                for (var i = 0; i < No; i++) {
+                    for (var n = 0; n < tr; n++) {
+                        fill(i / tr, 1, 20 / tr);
+                        stroke(i / No, 1, n / tr);
+
+                        push();
+
+                        roun = TWO_PI * i / No;
+                        rotate(-roun);
+                        r = faceX / 2 * sin(faceY / 2 * roun + TWO_PI * t + .1 * n);
+
+                        beginShape();
+                        vertex(r, 100);
+                        vertex((windowWidth / 2), (windowHeight / 2));
+                        endShape(CLOSE);
 
                         pop();
                     }
@@ -105,7 +90,8 @@
             var faceX = 0;
             var faceY = 0;
 
-            var tracker = new tracking.ObjectTracker('face');
+            ;var tracker = new tracking.ObjectTracker('face');
+
             tracker.setInitialScale(4);
             tracker.setStepSize(2);
             tracking.track('#video', tracker, {
