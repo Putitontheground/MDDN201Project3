@@ -39,7 +39,7 @@ function setup() {
 
 //color tracker
 
-var colors = new tracking.ColorTracker(['magenta', 'cyan', 'yellow']);
+var colors = new tracking.ColorTracker('magenta', 'cyan', 'yellow');
 
 colors.on('track', function(event) {
     if (event.data.length === 0) {// No colors were detected in this frame.
